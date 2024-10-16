@@ -5,11 +5,12 @@ RUN apt update -y && \
     apt install openssh-server -y  && \
     apt install maven -y
 
-EXPOSE 3000 22           # 3000 port of the java backend port
+EXPOSE 3000 
+EXPOSE 22           
 
 WORKDIR /backend/
 
-COPY ./spring_backend/ /backend/        # copy backend project to the image
+COPY ./Saay_Java_backend/ /backend/        
 
 
-ENTRYPOINT ["mvn","spring-boot:run"]         # run the project
+ENTRYPOINT ["mvn","spring-boot:run"]      

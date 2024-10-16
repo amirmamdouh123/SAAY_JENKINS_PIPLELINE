@@ -5,18 +5,19 @@ FROM node:18-alpine
 WORKDIR /frontend
 
 # Copy the package.json and package-lock.json files
-COPY ./react_frontend/package*.json ./
+COPY ./saye_react/package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the React project files to the container
-COPY ./react_frontend/ ./
+COPY ./saye_react/ ./
 
 # Build the React app for production
 RUN npm run build
 
 # Expose the port that the React app will run on
+EXPOSE 22
 EXPOSE 3000
 
 # Serve the React app using the `serve` package or similar
