@@ -18,7 +18,7 @@ RUN npm run build
 
 # Expose the port that the React app will run on
 EXPOSE 22
-EXPOSE 3000
+EXPOSE 5000 
 
 # Serve the React app using the `serve` package or similar
 RUN npm install -g serve
