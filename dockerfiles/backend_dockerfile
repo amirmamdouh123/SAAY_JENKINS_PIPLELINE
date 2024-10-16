@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt update -y && \
-    apt install openjdk-17 -y && \ 
+    apt install  openjdk-17-jdk -y && \ 
     apt install openssh-server -y  && \
     apt install maven -y
 
