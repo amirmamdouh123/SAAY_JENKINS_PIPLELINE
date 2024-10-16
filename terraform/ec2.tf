@@ -54,28 +54,20 @@ resource "aws_instance" "jenkins" {
               sudo apt-get update -y
               sudo apt-get install -y openjdk-11-jdk
 
-
-<<<<<<< HEAD
               sudo file -s /dev/xvdf          
               sudo mkfs -t ext4 /dev/xvdf
               sudo mount /dev/xvdf /var/lib/jenkins
-=======
-
-              # Mount EBS volume
-              sudo mkdir -p /var/jenkins_home
-              sudo mount /dev/sdf /var/jenkins_home
->>>>>>> 85eb2f2c6949c11a3f87a282ddf7d152c8e94a33
 
               # Ensure proper ownership for Jenkins
               sudo chown -R jenkins:jenkins /var/lib/jenkins_home
 
               # Make the mount persistent across reboots
-              if ! grep -qs '/var/lib/jenkins_home' /etc/fstab; then
-                echo '/dev/xvdf /var/lib/jenkins_home ext4 defaults,nofail 0 2' | sudo tee -a /etc/fstab
+              if ! grep -qs '/var/lib/jenkins' /etc/fstab; then
+                echo '/dev/xvdf /var/lib/jenkins ext4 defaults,nofail 0 2' | sudo tee -a /etc/fstab
               fi
 
               # Set Jenkins home directory
-              sudo usermod -d /var/lib/jenkins_home jenkins
+              sudo usermod -d /var/lib/jenkins jenkins
 
 
 
