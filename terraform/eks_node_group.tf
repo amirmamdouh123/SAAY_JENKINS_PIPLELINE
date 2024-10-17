@@ -12,7 +12,7 @@ resource "aws_eks_node_group" "saay_private_node_group" {
       min_size = 0
     }
 
-    instance_types = ["t2.micro"]
+    instance_types = ["t2.medium"]
 
     depends_on = [ 
         aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
@@ -48,7 +48,7 @@ resource "aws_eks_node_group" "saay_public_node_group" {
       min_size = 0
     }
 
-    instance_types = ["t2.micro"]
+    instance_types = ["t2.medium"]
 
     depends_on = [ 
         aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy 
