@@ -1,4 +1,4 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata: 
   name: frontend-dep 
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
        - name: frontend-container
-         image: <frontend-image-from-dockerhub>
+         image: amirmamdouh123/saay-frontend  
          ports: 
          - containerPort: 3000
          - containerPort: 22 

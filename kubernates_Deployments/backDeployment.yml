@@ -1,4 +1,4 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-dep 
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
        - name: backend-container
-         image: <backend-image-from-dockerhub>
+         image: amirmamdouh123/saay-backend
          ports:
          - containerPort: 3000
          - containerPort: 22
