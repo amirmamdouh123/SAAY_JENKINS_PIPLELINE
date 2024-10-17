@@ -2,19 +2,18 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontend-ingress
-  namespace: ingress-nginx
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: "nginx"  # Specify Ingress class
+    kubernetes.io/ingress.class: "nginx"  # Ensure this line is present
 spec:
   rules:
-    - host: saay.depi.com  # Ensure this matches your intended host
+    - host: saay.depi.com  # Change to your actual host
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: front-clusterip-service  # Ensure this matches your ClusterIP service
+                name: front-clusterip-service  # Ensure this matches your service name
                 port:
-                  number: 3000  # Should match the frontend service port
+                  number: 3000  # Ensure this matches your service port
+
