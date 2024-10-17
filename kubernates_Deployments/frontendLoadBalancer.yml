@@ -14,4 +14,4 @@ spec:
   selector:
     web: frontend        # Label selector to identify the pods
 
-~          
+          
