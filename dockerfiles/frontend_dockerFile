@@ -4,7 +4,7 @@ FROM node:18-alpine
 # Set the working directory inside the container
 WORKDIR /frontend
 
-# Copy the package.j0son and package-lock.json files
+# Copy the package.json and package-lock.json files
 COPY ./saye_react/package*.json ./
 
 # Install dependencies
@@ -22,5 +22,5 @@ EXPOSE 3000
 # Serve the React app using the `serve` package
 RUN npm install -g serve
 
-# Command to run the React app
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Command to run the React app, pointing to the dist folder
+CMD ["serve", "-s", "dist", "-l", "3000"]
