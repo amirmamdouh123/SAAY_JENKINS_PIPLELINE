@@ -67,6 +67,13 @@ resource "aws_security_group" "bastion_sg" {
   }
 
   ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes services)
+  }
+
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -103,6 +110,20 @@ resource "aws_security_group" "private_sg" {
     to_port     = 22
     protocol    = "tcp"
     security_groups = [aws_security_group.bastion_sg.id]  # Allow SSH from bastion
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] 
+  }
+
+    ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  
   }
 
   ingress {
