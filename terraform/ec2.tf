@@ -19,69 +19,69 @@ resource "local_file" "tf_key" {
 #   volume_id = "vol-03cef4ae735f04bdb"
 # }
 
-resource "aws_volume_attachment" "jenkins_with_volume" {
-  instance_id = aws_instance.jenkins.id
-  volume_id = "vol-03cef4ae735f04bdb"
-  device_name = "/dev/sdf"  # Change this device name as required
+# resource "aws_volume_attachment" "jenkins_with_volume" {
+#   instance_id = aws_instance.jenkins.id
+#   volume_id = "vol-03cef4ae735f04bdb"
+#   device_name = "/dev/sdf"  # Change this device name as required
   
-}
+# }
 
 
-# Create the jenkins host (public EC2)
-resource "aws_instance" "jenkins" {
-  ami           = "ami-005fc0f236362e99f"  # Change to a valid AMI in your region
+# # Create the jenkins host (public EC2)
+# resource "aws_instance" "jenkins" {
+#   ami           = "ami-005fc0f236362e99f"  # Change to a valid AMI in your region
   
-  instance_type = "t2.micro"
-  key_name = aws_key_pair.tf_key.key_name
-  subnet_id     = aws_subnet.public_subnet.id
-  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
-  associate_public_ip_address = true
+#   instance_type = "t2.micro"
+#   key_name = aws_key_pair.tf_key.key_name
+#   subnet_id     = aws_subnet.public_subnet.id
+#   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
+#   associate_public_ip_address = true
 
 
-  # # Attach the EBS volume
-  # root_block_device {
-  #   volume_id = data.aws_ebs_volume.jenkins_volume.id
-  #   volume_size = 10  # Size of the EBS volume in GiB
-  # }
+#   # # Attach the EBS volume
+#   # root_block_device {
+#   #   volume_id = data.aws_ebs_volume.jenkins_volume.id
+#   #   volume_size = 10  # Size of the EBS volume in GiB
+#   # }
 
 
-  tags = {
-    Name = "jenkins-instance"
-  }
+#   tags = {
+#     Name = "jenkins-instance"
+#   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo apt-get update -y
-              sudo apt-get install -y openjdk-11-jdk
+#   user_data = <<-EOF
+#               #!/bin/bash
+#               sudo apt-get update -y
+#               sudo apt-get install -y openjdk-11-jdk
 
-              sudo file -s /dev/xvdf          
-              sudo mkfs -t ext4 /dev/xvdf
-              sudo mount /dev/xvdf /var/lib/jenkins
+#               sudo file -s /dev/xvdf          
+#               sudo mkfs -t ext4 /dev/xvdf
+#               sudo mount /dev/xvdf /var/lib/jenkins
 
-              # Ensure proper ownership for Jenkins
-              sudo chown -R jenkins:jenkins /var/lib/jenkins_home
+#               # Ensure proper ownership for Jenkins
+#               sudo chown -R jenkins:jenkins /var/lib/jenkins_home
 
-              # Make the mount persistent across reboots
-              if ! grep -qs '/var/lib/jenkins' /etc/fstab; then
-                echo '/dev/xvdf /var/lib/jenkins ext4 defaults,nofail 0 2' | sudo tee -a /etc/fstab
-              fi
+#               # Make the mount persistent across reboots
+#               if ! grep -qs '/var/lib/jenkins' /etc/fstab; then
+#                 echo '/dev/xvdf /var/lib/jenkins ext4 defaults,nofail 0 2' | sudo tee -a /etc/fstab
+#               fi
 
-              # Set Jenkins home directory
-              sudo usermod -d /var/lib/jenkins jenkins
+#               # Set Jenkins home directory
+#               sudo usermod -d /var/lib/jenkins jenkins
 
 
 
-              # Install Jenkins
-              curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-              echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
-              sudo apt-get update -y
-              sudo apt-get install -y jenkins
+#               # Install Jenkins
+#               curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+#               echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+#               sudo apt-get update -y
+#               sudo apt-get install -y jenkins
 
-              # Start and enable Jenkins
-              sudo systemctl start jenkins
-              sudo systemctl enable jenkins
-              EOF
-}
+#               # Start and enable Jenkins
+#               sudo systemctl start jenkins
+#               sudo systemctl enable jenkins
+#               EOF
+# }
 
 
 
