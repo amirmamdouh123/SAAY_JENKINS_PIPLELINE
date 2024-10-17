@@ -11,7 +11,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: front-clusterIP-service
+            name: front-clusterip-service
             port:
               number: 3000
 
