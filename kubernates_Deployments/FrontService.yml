@@ -3,13 +3,11 @@ kind: Service
 metadata:
   name: front-clusterip-service
   namespace: ingress-nginx
-
-
 spec:
-  type: ClusterIP
-  ports:
-  - port: 3000
-    targetPort: 3000
-  
   selector:
     web: frontend
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+
