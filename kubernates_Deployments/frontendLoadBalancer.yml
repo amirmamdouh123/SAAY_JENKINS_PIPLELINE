@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: my-loadbalancer-service
   labels:
-    app: my-app
+    web: frontend
 
   namespace: ingress-nginx
 spec:
