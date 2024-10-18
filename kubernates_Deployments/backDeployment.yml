@@ -18,6 +18,6 @@ spec:
        - name: backend-container
          image: amirmamdouh123/saay-backend
          ports:
-         - containerPort: 3000
+         - containerPort: 4000
          - containerPort: 22
 
