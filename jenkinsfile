@@ -23,7 +23,7 @@ pipeline {
                     sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
                     sh 'docker build -f dockerfiles/frontend_dockerFile -t amirmamdouh123/saay-frontend .'
                     sh 'docker build -f dockerfiles/backend_dockerfile -t amirmamdouh123/saay-backend .'
-                    sh 'docker build -f db_dockerfile -t amirmamdouh123/saay-mysql .'  // Fixed misplaced quote
+                    sh 'docker build -f dockerfiles/db_dockerfile -t amirmamdouh123/saay-mysql .'  // Fixed misplaced quote
                     
                     sh 'docker push amirmamdouh123/saay-frontend'
                     sh 'docker push amirmamdouh123/saay-backend'
