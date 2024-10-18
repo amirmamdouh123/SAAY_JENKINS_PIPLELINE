@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name:i backend-loadbalancer-service
+  labels:
+    web: backend
+
+  namespace: ingress-nginx
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80         # Port that will be exposed by the LoadBalancer
+      targetPort: 3000 # Port on the pod that the traffic will be forwarded to
+  selector:
+    web: backend        # Label selector to identify the pods
+
+
+
