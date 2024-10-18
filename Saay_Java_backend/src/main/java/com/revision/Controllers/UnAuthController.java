@@ -67,7 +67,11 @@ public class UnAuthController {
 //    }
 
 
+    @GetMapping
+    public String testUp(){
 
+        return "backend is up";
+    }
 
     @PostMapping("login")
     public String login(HttpServletRequest request, HttpServletResponse response){
@@ -141,7 +145,7 @@ public class UnAuthController {
 
     @PostMapping("newPassword")
     public String setNewPassword(@RequestParam String token, @RequestBody NewPasswordDTO passwordDTO){
-        return resetPasswordService.updateUserPassword(token ,passwordDTO.getNewPassword());
+        return resetPasswordService.updateUserPassword(token ,passwordDTO.newPassword);
     }
 
 

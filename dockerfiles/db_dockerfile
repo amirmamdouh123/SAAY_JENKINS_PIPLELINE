@@ -2,10 +2,10 @@
 FROM mysql:8.0
 
 # Set environment variables for MySQL root password, database name, and user credentials
-ENV MYSQL_ROOT_PASSWORD=rootpassword
-ENV MYSQL_DATABASE=mydatabase
-ENV MYSQL_USER=myuser
-ENV MYSQL_PASSWORD=mypassword
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=saai
+ENV MYSQL_USER=user
+ENV MYSQL_PASSWORD=user
 
 # Expose the MySQL port
 EXPOSE 3306

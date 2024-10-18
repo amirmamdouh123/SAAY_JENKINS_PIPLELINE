@@ -15,7 +15,7 @@ public class RevisionApplication implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:3000")
+				.allowedOrigins("http://a26867ed0a1f34fc2ae6ed6914a6ca7c-1561372928.us-east-1.elb.amazonaws.com")
 				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 				.allowedHeaders("*")
 				.allowCredentials(true);

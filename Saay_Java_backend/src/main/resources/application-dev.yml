@@ -1,9 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/saai
+    url: jdbc:mysql://a2f9b5564775f45a89ff3bfd49c0031c-1201658359.us-east-1.elb.amazonaws.com:3306/saai
     username: root
-    password: amir
-
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 
 
