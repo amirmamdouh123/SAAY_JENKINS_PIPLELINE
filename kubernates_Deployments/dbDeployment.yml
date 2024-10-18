@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-dep 
+  name: mysql-dep 
+  
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      web: backend
+      web: mysql
   
   template:
     metadata:
        labels:
-         web: backend
+         web: mysql
 
     spec:
       containers:
-       - name: backend-container
-         image: amirmamdouh123/saay-backend
+       - name: mysql-container
+         image: amirmamdouh123/saay-mysql
          ports:
-         - containerPort: 3000
+         - containerPort: 3306
          - containerPort: 22
 

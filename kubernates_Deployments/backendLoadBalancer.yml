@@ -5,7 +5,6 @@ metadata:
   labels:
     web: backend
 
-  namespace: ingress-nginx
 spec:
   type: LoadBalancer
   ports:
