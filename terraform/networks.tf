@@ -81,11 +81,12 @@ resource "aws_security_group" "bastion_sg" {
   }
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 4000
+    to_port     = 4000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes services)
   }
+  
 
   egress {
     from_port   = 0
@@ -101,51 +102,51 @@ resource "aws_security_group" "bastion_sg" {
 
 
 
-# Create a security group for the private EC2 instance
-resource "aws_security_group" "private_sg" {
-  vpc_id = aws_vpc.my_vpc.id
+# # Create a security group for the private EC2 instance
+# resource "aws_security_group" "private_sg" {
+#   vpc_id = aws_vpc.my_vpc.id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    security_groups = [aws_security_group.bastion_sg.id]  # Allow SSH from bastion
-  }
+#   ingress {
+#     from_port   = 22
+#     to_port     = 22
+#     protocol    = "tcp"
+#     security_groups = [aws_security_group.bastion_sg.id]  # Allow SSH from bastion
+#   }
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
-  }
+#   ingress {
+#     from_port   = 80
+#     to_port     = 80
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"] 
+#   }
 
-    ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  
-  }
+#     ingress {
+#     from_port   = 443
+#     to_port     = 443
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]  
+#   }
 
-  ingress {
-    from_port   = 30010
-    to_port     = 30010
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes services)
-  }
+#   ingress {
+#     from_port   = 30010
+#     to_port     = 30010
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]  # NodePort access (for Kubernetes services)
+#   }
 
 
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow all outbound traffic
-  }
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]  # Allow all outbound traffic
+#   }
 
-  tags = {
-    Name = "private_sg"
-  }
-}
+#   tags = {
+#     Name = "private_sg"
+#   }
+# }
 
 
 
@@ -154,11 +155,11 @@ resource "aws_route_table" "private_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gw.id
+    gateway_id = aws_internet_gateway.my_igw.id
   }
 
   tags = {
-    Name = "private_route_table"
+    Name = "private_route_table"  
   }
 }
 

@@ -1,33 +1,33 @@
 # private node group
 
-resource "aws_eks_node_group" "saay_private_node_group" {
-  cluster_name = aws_eks_cluster.saay_eks.name
-  node_group_name = "saay_private_node_group"
-  node_role_arn = aws_iam_role.eks_node_group_role.arn
-  subnet_ids = [aws_subnet.private_subnet.id]
+# resource "aws_eks_node_group" "saay_private_node_group" {
+#   cluster_name = aws_eks_cluster.saay_eks.name
+#   node_group_name = "saay_private_node_group"
+#   node_role_arn = aws_iam_role.eks_node_group_role.arn
+#   subnet_ids = [aws_subnet.public_subnet.id]
 
-    scaling_config {
-      desired_size = 1
-      max_size = 2
-      min_size = 0
-    }
+#     scaling_config {
+#       desired_size = 1
+#       max_size = 2
+#       min_size = 0
+#     }
 
-    instance_types = ["t2.medium"]
+#     instance_types = ["t2.medium"]
 
-    depends_on = [ 
-        aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
-        aws_iam_role_policy_attachment.eks-AmazonEC2ContainerRegistryReadOnly,
-        aws_iam_role_policy_attachment.eks-CNIPolicy
-    ]
+#     depends_on = [ 
+#         aws_iam_role_policy_attachment.eks-AmazonEKSWorkerNodePolicy,
+#         aws_iam_role_policy_attachment.eks-AmazonEC2ContainerRegistryReadOnly,
+#         aws_iam_role_policy_attachment.eks-CNIPolicy
+#     ]
 
-    # associate private node group with security group      -> search for why?
-    remote_access {
-      ec2_ssh_key = aws_key_pair.tf_key.key_name
-      source_security_group_ids = [aws_security_group.private_sg.id]
-    }   
+#     # associate private node group with security group      -> search for why?
+#     remote_access {
+#       ec2_ssh_key = aws_key_pair.tf_key.key_name
+#       source_security_group_ids = [aws_security_group.private_sg.id]
+#     }   
 
     
-}
+# }
 
 
 
@@ -36,9 +36,9 @@ resource "aws_eks_node_group" "saay_private_node_group" {
 # public node group
 
 resource "aws_eks_node_group" "saay_public_node_group" {
-  cluster_name = aws_eks_cluster.saay_eks.name
+  cluster_name = aws_eks_cluster.saayeks.name
   node_group_name = "saay_public_node_group"
-  node_role_arn = aws_iam_role.eks_node_group_role.arn
+  node_role_arn = "arn:aws:iam::277707121935:role/eks_node_group_role"
   subnet_ids = [aws_subnet.public_subnet.id]
 
 
@@ -58,10 +58,38 @@ resource "aws_eks_node_group" "saay_public_node_group" {
     # associate private node group with security group      -> search for why?
     remote_access {
       ec2_ssh_key = aws_key_pair.tf_key.key_name
-      source_security_group_ids = [aws_security_group.bastion_sg.id]
+      source_security_group_ids = [aws_security_group.eks_node_group_sg.id]
     }    
 }
 
+resource "aws_security_group" "eks_node_group_sg" {
+    vpc_id = aws_vpc.my_vpc.id
+
+    ingress {
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]  # Allow HTTP traffic
+    }
+
+    ingress {
+        from_port   = 3000
+        to_port     = 3000
+        protocol    = "tcp"
+        security_groups = [aws_security_group.bastion_sg.id]  # Allow access from bastion security group
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]  # Allow all outbound traffic
+    }
+
+    tags = {
+        Name = "eks_node_group_sg"
+    }
+}
 
 
 
