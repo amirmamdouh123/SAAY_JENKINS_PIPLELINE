@@ -1,9 +1,10 @@
-import { Link, NavLink } from "react-router-dom"; // Updated import
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "@assets/logo2.svg";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { IoMenuSharp } from "react-icons/io5";
 import cn from "@/lib/utils";
 import CustomLink from "./CustomLink";
+import Cookies from "js-cookie";
 
 type TNavigationItemProps = {
   to: string;
@@ -35,6 +36,19 @@ const NavigationItem = ({ to, children, onClick }: TNavigationItemProps) => (
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    setIsLoggedIn(false);
+    navigate("/auth/login");
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -80,7 +94,16 @@ const Header = () => {
               اتصل بنا
             </NavigationItem>
           </ul>
-          <CustomLink link={"/auth/login"} text={"تسجيل الدخول"} />
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white py-2 px-4 rounded"
+            >
+              تسجيل الخروج
+            </button>
+          ) : (
+            <CustomLink link={"/auth/login"} text={"تسجيل الدخول"} />
+          )}
         </div>
       </nav>
     </header>

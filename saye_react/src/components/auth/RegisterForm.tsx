@@ -1,10 +1,13 @@
 import cn from "@/lib/utils";
-import { useRegisterMutation } from "@/redux/features/auth/authApiSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import RegisterSchema from "./RegisterSchema";
+import axios from "axios";
+
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 type TRegisterInputsProps = {
   first_name: string;
@@ -16,7 +19,10 @@ type TRegisterInputsProps = {
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [registerUser] = useRegisterMutation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -27,18 +33,47 @@ const RegisterForm = () => {
   });
 
   const onSubmit: SubmitHandler<TRegisterInputsProps> = async (data) => {
+    setLoading(true);
     try {
       const { first_name, last_name, email, password } = data;
-      const username = `${first_name} ${last_name}`;
-      const result = await registerUser({ username, email, password });
-      console.log("Registration successful:", result);
-    } catch (err) {
-      console.error("Registration failed:", err);
+      const name = `${first_name}.${last_name}`;
+
+      await axios.post(`${baseUrl}/auth/register`, {
+        name,
+        email,
+        password,
+      });
+
+      setSuccessMessage("تم التسجيل بنجاح!");
+      setTimeout(() => {
+        navigate("/auth/login");
+      }, 2000);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        console.error("Axios error:", err.response?.data);
+        if (err.response?.data?.message === "Email already exists") {
+          setSuccessMessage("هذا البريد الإلكتروني مسجل بالفعل.");
+        } else {
+          setSuccessMessage("حدث خطأ أثناء التسجيل. حاول مرة أخرى.");
+        }
+      } else {
+        console.error("Registration failed:", err);
+        setSuccessMessage("حدث خطأ غير متوقع. حاول مرة أخرى.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {successMessage && (
+        <div className="bg-green-100 text-green-800 p-2 mb-4 rounded">
+          {successMessage}
+        </div>
+      )}
+      {loading && <div className="loader">جاري التسجيل...</div>}{" "}
+      {/* Loader display */}
       <div className="mb-4">
         <label className="block text-gray-700 mb-2" htmlFor="first_name">
           الاسم الأول
@@ -57,7 +92,6 @@ const RegisterForm = () => {
           <p className="text-red-500 text-sm">{errors.first_name.message}</p>
         )}
       </div>
-
       <div className="mb-4">
         <label className="block text-gray-700 mb-2" htmlFor="last_name">
           الاسم الأخير
@@ -76,7 +110,6 @@ const RegisterForm = () => {
           <p className="text-red-500 text-sm">{errors.last_name.message}</p>
         )}
       </div>
-
       <div className="mb-4">
         <label className="block text-gray-700 mb-2" htmlFor="email">
           البريد الإلكتروني
@@ -101,7 +134,6 @@ const RegisterForm = () => {
           <p className="text-red-500 text-sm">{errors.email.message}</p>
         )}
       </div>
-
       <div className="mb-4 relative">
         <label className="block text-gray-700 mb-2" htmlFor="password">
           كلمة المرور
@@ -136,7 +168,6 @@ const RegisterForm = () => {
           <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
       </div>
-
       <div className="mb-4">
         <label className="block text-gray-700 mb-2" htmlFor="confirm_password">
           إعادة تأكيد كلمة المرور
@@ -165,12 +196,12 @@ const RegisterForm = () => {
           </p>
         )}
       </div>
-
       <button
         type="submit"
         className="bg-myGreen-dark text-white p-2 rounded w-full hover:bg-myGreen-hover"
+        disabled={loading}
       >
-        تسجيل
+        {loading ? "جاري التحميل..." : "تسجيل"}
       </button>
     </form>
   );

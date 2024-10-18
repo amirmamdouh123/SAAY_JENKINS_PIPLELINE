@@ -16,7 +16,7 @@ public class EmpController {
     @Autowired
     EmpService empService;
 
-    @PreAuthorize("hasRole('READ')")
+//    @PreAuthorize("hasRole('READ')")
     @GetMapping("all")
     public List<Employee> getAll(){
         return empService.getAll();
