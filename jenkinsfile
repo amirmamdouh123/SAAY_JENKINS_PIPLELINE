@@ -61,7 +61,7 @@ post {
                 def color = COLOR_MAP[currentBuild.currentResult] ?: 'warning' // Default to 'warning' if build result is not FAILURE or SUCCESS
                 slackSend (
                     color: color,
-                    channel: '#prod',
+                    channel: 'prod',
                      message: "Job '${env.JOB_NAME}' [${env.BUILD_NUMBER}] (${env.BUILD_URL}) finished with status: ${currentBuild.currentResult}"
                 )
             }
