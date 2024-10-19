@@ -32,7 +32,6 @@ pipeline {
                 // Deploy db, frontend, backend services and deployments
                 sh 'kubectl apply -f kubernates_Deployments/dbService.yml'
                 sh 'kubectl apply -f kubernates_Deployments/FrontDeployment.yml'
-                sh 'kubectl apply -f kubernates_Deployments/FrontService.yml'
                 sh 'kubectl apply -f kubernates_Deployments/dbDeployment.yml'
                 sh 'kubectl apply -f kubernates_Deployments/backDeployment.yml'
                 sh 'kubectl apply -f kubernates_Deployments/backService.yml'
