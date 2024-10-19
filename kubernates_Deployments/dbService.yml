@@ -11,5 +11,5 @@ spec:
     targetPort: 3306 
 
   selector:
-    web: db 
+    web: mysql 
 
