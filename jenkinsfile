@@ -41,7 +41,18 @@ pipeline {
             }
         }
     }
-
+  post {
+        always {
+            echo 'Slack Notifications'
+            script {
+                def color = COLOR_MAP[currentBuild.currentResult] ?: 'warning' // Default to 'warning' if build result is not FAILURE or SUCCESS
+                slackSend (
+                    color: color,
+                    channel: '#prod',
+                    message: "${currentBuild.currentResult} Job ${env.JOB_NAME}\nbuild ${env.BUILD_NUMBER}\nMore info at: ${env.BUILD_URL}"
+                )
+            }
+        }
     post {
         always {
             echo 'Cleaning up...'
@@ -53,6 +64,7 @@ pipeline {
         failure {
             echo 'Pipeline failed!'
         }
+
     }
 }
 
