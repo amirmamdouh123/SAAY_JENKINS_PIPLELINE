@@ -1,7 +1,3 @@
-For your DevOps project, here's an example of what you can include in your **README** file to explain the structure and purpose of your project:
-
----
-
 # DevOps Project: Frontend, Backend, and Jenkins Integration with AWS EKS
 
 ## Project Overview
@@ -34,39 +30,4 @@ This project consists of a **Frontend** and **Backend** application that is depl
 3. Jenkins builds Docker images for the frontend, backend, and database.
 4. The Docker images are pushed to AWS ECR.
 5. Kubernetes deployments are updated in EKS using `kubectl` commands.
-  
-## Setup Instructions
-
-1. **Clone the repository**:
-   ```
-   git clone <your-repository-url>
-   cd <your-project-directory>
-   ```
-
-2. **Jenkins Setup**:
-   - Ensure your Jenkins EC2 instance is properly configured to interact with your GitHub repo and AWS.
-   - Set up Jenkins credentials for accessing your AWS account and ECR.
-   - Install the necessary Jenkins plugins (e.g., AWS CLI, Kubernetes, Docker).
-
-3. **AWS EKS Setup**:
-   - Create an EKS cluster in your AWS account.
-   - Deploy your Kubernetes configurations for the frontend, backend, and database.
-   - Set up `kubectl` to connect to the EKS cluster.
-
-4. **Jenkins Pipeline Configuration**:
-   - Set up Jenkins pipelines for both frontend and backend applications.
-   - Use the pipeline script to automate the build, push, and deploy processes.
-
-## How to Contribute
-
-- Fork the repository and create a pull request with your changes.
-- Make sure to follow the coding standards and write tests for your code.
-- If you want to contribute to the Jenkins pipeline, please make sure your changes do not break the existing workflows.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-This README will help you present the structure of your project clearly, and guide anyone who needs to understand or contribute to it.
+   help you present the structure of your project clearly, and guide anyone who needs to understand or contribute to it.
